@@ -1,0 +1,92 @@
+# Node.js
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Build directories
+build/
+dist/
+.expo/
+.expo-shared/
+
+# Expo files
+*.expo
+*.expo-shared
+
+# React Native
+android/
+ios/
+*.keystore
+*.iml
+*.hprof
+*.swp
+*.lock
+*.lock.json
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.DS_Store
+
+# IDEs and editors
+.idea/
+.vscode/
+**/.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Environment variables
+.env
+.env.*
+
+# Misc
+*.bak
+*.tmp
+*.temp
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+
+# TypeScript
+*.tsbuildinfo
+
+# Package files
+package-lock.json
+yarn.lock
+
+# Others
+*.log
+*.gz
+*.zip
+*.tar
+*.tgz
+*.rar
+*.7z
+*.bak
+*.tmp
+*.swp
+*.swo
+*.pid
+*.seed
+*.pid.lock
