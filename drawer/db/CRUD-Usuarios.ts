@@ -1,13 +1,13 @@
 import * as SQLite from 'expo-sqlite';
 
-const db = await SQLite.openDatabaseAsync('mydatabase.db');
+const db = SQLite.openDatabaseSync('mydatabase.db');
 
 interface Usuario {
-    id: number;
+    id?: number;
     nombre: string;
     email: string;
     edad: number;
-    created_at: string;
+    created_at?: string;
 }
 
 // create
@@ -19,7 +19,7 @@ export const createUsuario = async (usuario: Usuario): Promise<any> => {
         $nombre: usuario.nombre,
         $email: usuario.email,
         $edad: usuario.edad,
-        $created_at: usuario.created_at
+        $created_at: usuario.created_at || new Date().toISOString()
     });
 };
 
@@ -31,6 +31,13 @@ export const getUsuarioById = async (id: number) => {
     );    
     
 };
+
+// get all usuarios
+export const getAllUsuarios = async () => {
+    return await db.getAllAsync<{data: Usuario}> (
+        'SELECT * FROM usuarios ORDER BY created_at DESC'
+    );
+}
 
 // update usuario
 export const updateUsuario = async (id: number, usuario: Partial<Usuario>) => {
