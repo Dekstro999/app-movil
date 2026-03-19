@@ -38,4 +38,26 @@ export const initDatabase = async () => {
         });
         console.log('Tablas SQLite listas');
 
+
+
+        // migracion simle para agregar columnas nuevas sin perder datos
+        const ensureColum = async (
+            taable: "usuarios" | "notas",
+            column: string,
+            definition: string
+        ) => {
+            // Implement column ensuring logic here
+            const columns = await db.getAllAsync<{ name: string }>
+            (`PRAGMA table_info(${taable});`);
+            const columnExists = columns.some((col) => col.name === column);
+            if (!columnExists) {
+                await db.execAsync(`ALTER TABLE ${taable} ADD COLUMN ${column} ${definition};`);
+                console.log(`Columna '${column}' agregada a la tabla '${taable}'`);
+            } else {
+                console.log(`Columna '${column}' ya existe en la tabla '${taable}'`);
+            }
+        };
+
+        await ensureColum('usuarios', 'telefono', 'TEXT');
+        
 };
