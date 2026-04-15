@@ -54,3 +54,9 @@ export const deleteUsuario = async (id: number) => {
     const statement = await db.prepareAsync('DELETE FROM usuarios WHERE id = ?');
     return await statement.executeAsync([id]);
 }
+
+// delete all usuarios (para testing)
+export const deleteAllUsuarios = async () => {
+    const statement = await db.prepareAsync('DELETE FROM usuarios');
+    return await statement.executeAsync();
+};

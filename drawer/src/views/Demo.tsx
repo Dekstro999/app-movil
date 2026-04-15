@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View, Alert, TouchableOpacity } from "react-native";
-import { initDatabase } from "../../db/initDatabase";
+import { clearAllData, initDatabase } from "../../db/initDatabase";
 import { createUsuario, getAllUsuarios } from "../../db/CRUD-Usuarios";
 import { createNota, getAllNotas } from "../../db/CRUD-Notas";
 import { useState } from "react";
@@ -16,8 +16,10 @@ export default function Demo() {
 
     const appendLog = (message: string) => {
         Alert.alert(message);
-        setLogs((prevLogs) => [...prevLogs, message]);
+        // setLogs((prevLogs) => [...prevLogs, message]);
     };
+
+    const getInsertId = (result: any) => Number(result?.lastInsertRowId ?? 0);
 
     const demo = async () => {
         setRunning(true);
@@ -25,32 +27,45 @@ export default function Demo() {
         try {
             appendLog('Iniciando demo de operaciones CRUD en SQLite...');
             await initDatabase();
-            appendLog('Base de datos inicializada correctamente.');
+            appendLog('Base de datos inicializada.......Demo');
             const userEmail = `demo_${Date.now()}@example.com`;
-            const userInsert = await createUsuario({
+            // edad aleatoria entre 18 y 60
+            const userEdad = Math.floor(Math.random() * (60 - 18 + 1)) + 18;
+            const newUsuario = {
                 nombre: 'Usuario Demo',
                 email: userEmail,
-                edad: 30,
-                created_at: new Date().toISOString(),
-            });
-            appendLog(`Usuario creado con ID: ${userInsert.insertId}`);
+                edad: userEdad,
+            };
+
+            const userInsert = await createUsuario(
+                newUsuario
+            );
+            const userId = getInsertId(userInsert);
+            appendLog(`Usuario creado con ID: ${userId}`);
+            
+            // appendLog(`Usuario insertado: ${JSON.stringify(newUsuario)}`);
+            Alert.alert(`Usuario insertado: ${JSON.stringify(newUsuario)}`);
 
             const allUsuarios = await getAllUsuarios();
-            appendLog(`Total de usuarios en la base de datos: ${allUsuarios.length}`);
+            Alert.alert(`Total de usuarios en la base de datos: ${allUsuarios.length}`);
 
             const notaInsert = await createNota({
                 titulo: 'Nota de Demo',
                 contenido: 'Esta es una nota de demostración.',
-                usuario_id: userInsert.insertId,
+                usuario_id: userId,
                 created_at: new Date().toISOString(),
             });
-            appendLog(`Nota creada con ID: ${notaInsert.insertId}`);
+            const notaId = getInsertId(notaInsert);
+            appendLog(`Nota creada con ID: ${notaId}`);
 
             const allNotas = await getAllNotas();
             appendLog(`Total de notas en la base de datos: ${allNotas.length}`);
 
         } catch (error) {
-            appendLog(`Error en demo: ${error instanceof Error ? error.message : String(error)}`);
+            // appendLog(`Error en demo: ${error instanceof Error ? error.message : String(error)}`);
+            Alert.alert(`Error en demo: ${error instanceof Error ? error.message : String(error)}`);
+        } finally {
+            setRunning(false);
         }
     };
 
@@ -63,10 +78,31 @@ export default function Demo() {
             <TouchableOpacity
                 onPress={demo}
                 style={buttonStyle}
+                disabled={running}
             >
-                <Text style={{ color: '#8b2121' }}>{'Ejecutar Demo CRUD'}</Text>
+                <Text style={{ color: '#8b2121' }}>{running ? 'Ejecutando...' : 'Ejecutar Demo CRUD'}</Text>
             </TouchableOpacity>
 
+            {/* boton borrado usuarios */}
+            <TouchableOpacity
+                onPress={async () => {
+                    setRunning(true);
+                    try {
+                        await clearAllData();
+                        const usuariosRestantes = await getAllUsuarios();
+                        const notasRestantes = await getAllNotas();
+                        appendLog(`Borrado completo. Usuarios: ${usuariosRestantes.length}, Notas: ${notasRestantes.length}`);
+                    } catch (error) {
+                        Alert.alert(`Error al borrar datos: ${error instanceof Error ? error.message : String(error)}`);
+                    } finally {
+                        setRunning(false);
+                    }
+                }}
+                style={buttonStyle}
+                disabled={running}
+            >
+                <Text style={{ color: '#8b2121' }}>Borrar Todos los Usuarios y Notas</Text>
+            </TouchableOpacity>
 
         </View>
     );

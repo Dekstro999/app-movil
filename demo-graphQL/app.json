@@ -1,13 +1,12 @@
 {
   "expo": {
-    "name": "drawer",
-    "slug": "drawer",
+    "name": "demo-graphQL",
+    "slug": "demo-graphQL",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "scheme": "myapp",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -17,24 +16,15 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.dekstro999.drawer",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-sqlite"
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "1b1a9002-c74c-446f-a75e-3da296a87054"
-      }
-    },
-    "owner": "dekstro999"
+    }
   }
 }

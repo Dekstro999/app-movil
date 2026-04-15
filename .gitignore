@@ -90,3 +90,5 @@ yarn.lock
 *.pid
 *.seed
 *.pid.lock
+# Firebase Admin credentials
+**/expo-movil-firebase-adminsdk-*.json

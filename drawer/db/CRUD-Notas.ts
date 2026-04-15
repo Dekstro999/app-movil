@@ -79,3 +79,9 @@ export const deleteNotasByUsuarioId = async (usuario_id: number) => {
     const statement = await db.prepareAsync('DELETE FROM notas WHERE usuario_id = ?');
     return await statement.executeAsync([usuario_id]);
 };
+
+// borrar todas las notas (para testing)
+export const deleteAllNotas = async () => {
+    const statement = await db.prepareAsync('DELETE FROM notas');
+    return await statement.executeAsync();
+};
